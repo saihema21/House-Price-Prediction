@@ -1,29 +1,29 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-# -----------------------------
-# LOAD DATA
-# -----------------------------
+# load dataset
 data = pd.read_csv("data/housing.csv")
 
-# FEATURES & TARGET
-X = data[['area']]
-y = data['price']
+# ------------------ HEATMAP ------------------
+plt.figure(figsize=(10,6))
+sns.heatmap(data.corr(), annot=True, cmap="coolwarm")
+plt.savefig("outputs/heatmap.png")
+plt.clf()
 
-# TRAIN MODEL
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# ------------------ HISTOGRAM ------------------
+data.hist(figsize=(10,8))
+plt.savefig("outputs/histogram.png")
+plt.clf()
 
-model = RandomForestRegressor()
-model.fit(X_train, y_train)
+# ------------------ SCATTER ------------------
+numeric_cols = data.select_dtypes(include=['int64', 'float64']).columns
 
-# -----------------------------
-# PREDICTION SYSTEM
-# -----------------------------
-print("\n🏠 House Price Prediction System")
+plt.scatter(data[numeric_cols[0]], data[numeric_cols[1]])
+plt.xlabel(numeric_cols[0])
+plt.ylabel(numeric_cols[1])
+plt.savefig("outputs/scatter.png")
+plt.clf()
 
-area = float(input("Enter area (sq ft): "))
-
-prediction = model.predict([[area]])
-
-print(f"\n💰 Estimated Price: {prediction[0]:,.2f}")
+print(data.columns)
+print("All images generated successfully!")

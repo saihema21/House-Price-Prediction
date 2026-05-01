@@ -52,3 +52,4 @@ An end-to-end Machine Learning project that predicts house prices based on input
 ```bash
 pip install -r requirements.txt
 python main.py
+
